@@ -74,3 +74,6 @@ vvtk_http_stream
 /public/testing_files/
 
 /data/
+
+/db/development.sqlite3-journal
+
