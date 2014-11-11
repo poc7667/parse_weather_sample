@@ -7,6 +7,12 @@ class WeatherLogsController < ApplicationController
     begin
       start_time = Date.parse(params["start_time"])  if params.has_key?"start_time"
       end_time = Date.parse(params["end_time"]) + 1.day if params.has_key?"end_time"
+      if params.has_key? "attributes"
+        attributes =  params["attributes"].split ','
+        attributes << "datetime"
+      end
+
+
 
       if start_time and end_time
         @weather_logs = WeatherLog.where(datetime: start_time..end_time)
@@ -16,6 +22,13 @@ class WeatherLogsController < ApplicationController
         @weather_logs =  WeatherLog.where("datetime < ?", end_time)
       end
         @weather_logs = @weather_logs.order(datetime: :asc).first(200)
+      respond_to do |format|
+        if attributes
+          format.json { render json: @weather_logs.as_json(only: attributes)}
+        else
+          format.json { render json: @weather_logs.as_json(only: [:latitude, :longitude, :datetime, :air_temperature])}
+        end
+      end
     rescue Exception => e
       respond_to do |format|
         format.json { render json: {status: "Invalid Request #{e}"} }
