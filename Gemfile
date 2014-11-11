@@ -38,3 +38,32 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+
+group :development do
+    # gem "rspec-rails"
+    gem "guard-rspec"
+    # gem 'pry'
+    # gem 'pry-rails'
+    # gem 'pry-doc'
+    gem 'pry-stack_explorer'
+    gem 'pry-nav'
+
+    if RUBY_VERSION >= '2.0.0'
+        #gem 'pry-byebug'
+    else
+        # 以下はRuby1.9の時のみ使う(pry-byebugの代わりに)
+        # debuggerは1.9以下でしか動作しない, remote は byebug で使えないようになった
+        gem 'pry-debugger'
+        gem 'pry-remote'
+    end
+
+    #fast command
+    gem "spring"
+
+    gem 'rails-erd'
+    gem 'quiet_assets'
+    gem 'guard-livereload', require: false
+    gem "faker"
+    # profile
+    gem 'rack-mini-profiler'
+end
