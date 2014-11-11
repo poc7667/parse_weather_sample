@@ -3,7 +3,7 @@ class CreateWeatherLogs < ActiveRecord::Migration
     create_table :weather_logs do |t|
       t.float :latitude
       t.float :longitude
-      t.datatime :datatime
+      t.datetime :datatime
       t.float :air_temperature
 
       t.timestamps
