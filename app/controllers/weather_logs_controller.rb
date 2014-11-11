@@ -11,26 +11,28 @@ class WeatherLogsController < ApplicationController
         attributes =  params["attributes"].split ','
         attributes << "datetime"
       end
-
-
-
+      @weather_logs = WeatherLog.all
       if start_time and end_time
-        @weather_logs = WeatherLog.where(datetime: start_time..end_time)
+        @weather_logs = @weather_logs.where(datetime: start_time..end_time)
       elsif start_time
-        @weather_logs =  WeatherLog.where("datetime > ?", start_time)
+        @weather_logs =  @weather_logs.where("datetime > ?", start_time)
       elsif end_time
-        @weather_logs =  WeatherLog.where("datetime < ?", end_time)
+        @weather_logs =  @weather_logs.where("datetime < ?", end_time)
       end
-        @weather_logs = @weather_logs.order(datetime: :asc).first(200)
+
+      @weather_logs = @weather_logs.order(datetime: :asc).first(200)
+
       respond_to do |format|
         if attributes
           format.json { render json: @weather_logs.as_json(only: attributes)}
         else
           format.json { render json: @weather_logs.as_json(only: [:latitude, :longitude, :datetime, :air_temperature])}
         end
+        format.html
       end
     rescue Exception => e
       respond_to do |format|
+        format.html
         format.json { render json: {status: "Invalid Request #{e}"} }
       end
     end
