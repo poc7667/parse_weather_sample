@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Latitude:</strong>
+  <%= @weather_log.latitude %>
+</p>
+
+<p>
+  <strong>Longitude:</strong>
+  <%= @weather_log.longitude %>
+</p>
+
+<p>
+  <strong>Datatime:</strong>
+  <%= @weather_log.datatime %>
+</p>
+
+<p>
+  <strong>Air temperature:</strong>
+  <%= @weather_log.air_temperature %>
+</p>
+
+<%= link_to 'Edit', edit_weather_log_path(@weather_log) %> |
+<%= link_to 'Back', weather_logs_path %>
