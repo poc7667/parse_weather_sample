@@ -4,7 +4,23 @@ class WeatherLogsController < ApplicationController
   # GET /weather_logs
   # GET /weather_logs.json
   def index
-    @weather_logs = WeatherLog.all
+    begin
+      start_time = Date.parse(params["start_time"])  if params.has_key?"start_time"
+      end_time = Date.parse(params["end_time"]) + 1.day if params.has_key?"end_time"
+
+      if start_time and end_time
+        @weather_logs = WeatherLog.where(datetime: start_time..end_time)
+      elsif start_time
+        @weather_logs =  WeatherLog.where("datetime > ?", start_time)
+      elsif end_time
+        @weather_logs =  WeatherLog.where("datetime < ?", end_time)
+      end
+        @weather_logs = @weather_logs.order(datetime: :asc).first(200)
+    rescue Exception => e
+      respond_to do |format|
+        format.json { render json: {status: "Invalid Request #{e}"} }
+      end
+    end
   end
 
   # GET /weather_logs/1
