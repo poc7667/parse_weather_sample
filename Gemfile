@@ -69,4 +69,4 @@ group :development do
     gem 'hirb'
 end
 gem 'pg', '~> 0.17.1'
-
+gem "awesome_print", require: "ap"
