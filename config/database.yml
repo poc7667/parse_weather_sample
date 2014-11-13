@@ -1,6 +1,8 @@
 development:
-  adapter: postgresql
+  adapter: postgis
   encoding: unicode
+  postgis_extension: postgis      # default is postgis
+  schema_search_path: public,postgis
   database: fly_berry_development
   pool: 5
   username: <%=  ENV['database_username'] %>
