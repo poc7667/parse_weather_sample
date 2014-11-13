@@ -2,6 +2,13 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
+# Load the env
+config = YAML.load(File.read(File.expand_path('../application.yml', __FILE__)))
+config.merge! config.fetch(Rails.env, {})
+config.each do | key, value|
+      ENV[key] = value unless  value.kind_of? Hash
+end
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
