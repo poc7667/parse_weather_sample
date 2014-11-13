@@ -91,3 +91,8 @@ vvtk_http_stream
 
 /lib/tasks/file_list_2014.txt
 /lib/tasks/updates.txt
+
+/lib/tasks/2014/
+/lib/tasks/999999-94996-2014.min
+/lib/tasks/log/
+/lib/tasks/sample_weather.json
