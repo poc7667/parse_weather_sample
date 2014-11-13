@@ -5,12 +5,20 @@ namespace :import do
     weather_logs = JSON.load(open(sample_file))
     weather_logs.each do |w_log|
       dt = Date.parse(w_log["datetime"])
-      WeatherLog.create(
+      log = WeatherLog.new(
         latitude: w_log["latitude"].to_f,
         longitude: w_log["longitude"].to_f,
         air_temperature: w_log["air_temperature"].to_f,
-        datetime: dt
+        datetime: dt,
       )
+      ["report_type","wban", "weather_station"].each do |attr|
+        log.send("#{attr}=", w_log[attr].to_s)
+      end
+      ["sea_level_pressure","dew_point_temperature", "elevation",
+       "visibility_distance", "precipitation_hour", "precipitation_depth_in_mm"].each do | attr |
+        log.send("#{attr}=", w_log[attr].to_f)
+       end
+      log.save
     end
   end
 end
