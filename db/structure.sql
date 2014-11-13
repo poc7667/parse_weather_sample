@@ -71,8 +71,7 @@ CREATE TABLE weather_logs (
     visibility_distance double precision,
     precipitation_hour double precision,
     precipitation_depth_in_mm double precision,
-    latitude numeric(9,6),
-    longitude numeric(9,6)
+    lonlat_id integer
 );
 
 
@@ -111,6 +110,13 @@ ALTER TABLE ONLY weather_logs
 
 
 --
+-- Name: index_weather_logs_on_lonlat_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_weather_logs_on_lonlat_id ON weather_logs USING btree (lonlat_id);
+
+
+--
 -- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -134,4 +140,12 @@ INSERT INTO schema_migrations (version) VALUES ('20141113091604');
 INSERT INTO schema_migrations (version) VALUES ('20141113091832');
 
 INSERT INTO schema_migrations (version) VALUES ('20141113092204');
+
+INSERT INTO schema_migrations (version) VALUES ('20141113101752');
+
+INSERT INTO schema_migrations (version) VALUES ('20141113102436');
+
+INSERT INTO schema_migrations (version) VALUES ('20141113113149');
+
+INSERT INTO schema_migrations (version) VALUES ('20141113145419');
 
