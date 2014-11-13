@@ -37,10 +37,10 @@ Net::FTP.open('ftp.ncdc.noaa.gov', 'anonymous', '') do |ftp|
   end
   file_lst = load_sample_file_list
   file_lst.each do |file_name|
-    if sample_prefix.detect{|usaf| file_name.split("-").first == usaf}
-      p file_name
+    # if sample_prefix.detect{|usaf| file_name.split("-").first == usaf}
+      # p file_name
       ftp.getbinaryfile(file_name)
-    end
+    # end
   end
 
 end
