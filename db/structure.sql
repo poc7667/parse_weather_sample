@@ -9,34 +9,6 @@ SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
---
--- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
-
-
---
--- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION postgis IS 'PostGIS geometry, geography, and raster spatial types and functions';
-
-
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
@@ -71,7 +43,10 @@ CREATE TABLE weather_logs (
     visibility_distance double precision,
     precipitation_hour double precision,
     precipitation_depth_in_mm double precision,
-    lonlat_id integer
+    lonlat_id integer,
+    lonlat geography(Point,4326),
+    latitude double precision,
+    longitude double precision
 );
 
 
@@ -110,6 +85,13 @@ ALTER TABLE ONLY weather_logs
 
 
 --
+-- Name: index_weather_logs_on_lonlat; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_weather_logs_on_lonlat ON weather_logs USING gist (lonlat);
+
+
+--
 -- Name: index_weather_logs_on_lonlat_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -127,7 +109,7 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user",public;
+SET search_path TO public,postgis;
 
 INSERT INTO schema_migrations (version) VALUES ('20141111051302');
 
@@ -148,4 +130,8 @@ INSERT INTO schema_migrations (version) VALUES ('20141113102436');
 INSERT INTO schema_migrations (version) VALUES ('20141113113149');
 
 INSERT INTO schema_migrations (version) VALUES ('20141113145419');
+
+INSERT INTO schema_migrations (version) VALUES ('20141113145912');
+
+INSERT INTO schema_migrations (version) VALUES ('20141113152601');
 
