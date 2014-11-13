@@ -66,4 +66,7 @@ group :development do
     gem "faker"
     # profile
     gem 'rack-mini-profiler'
+    gem 'hirb'
 end
+gem 'pg', '~> 0.17.1'
+
