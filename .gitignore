@@ -78,5 +78,5 @@ vvtk_http_stream
 /db/development.sqlite3-journal
 
 
-/lib/tasks/fetch_noaa_data.rb
-/lib/tasks/updates.txt
+
+/lib/tasks/994975-99999-2014.gz
