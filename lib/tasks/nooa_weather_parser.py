@@ -40,14 +40,6 @@ def get_source_files():
   return source_files
 
 
-def setup_logging(logging_file_path="log/stdout.log"):
-    log_dir = os.path.dirname(os.path.realpath(logging_file_path))
-    if not os.path.isdir(log_dir):
-        os.makedirs(log_dir)  # it can built folder tree in one call
-
-    logging.basicConfig(filename=logging_file_path, level=logging.DEBUG)
-    logging.getLogger().addHandler(logging.StreamHandler())
-    logging.info("{0} starts".format(__file__))
 
 def get_precipitation(report):
     if report.precipitation:
@@ -56,8 +48,8 @@ def get_precipitation(report):
         return ["null","null"]
 
 def convert_file_to_json(sample_file):
+    print(sample_file)
     export_weather_list = []
-    setup_logging()
     with open(sample_file) as fp:
         content = fp.read()
     wp = ish_parser()
@@ -83,7 +75,6 @@ def convert_file_to_json(sample_file):
             "precipitation_hour": str(precip_hour),
             "precipitation_depth_in_mm": str(precip_depth)
         }
-        pdb.set_trace()
         export_weather_list.append(current_weather)
     with open(sample_file+'.json', 'w') as f:
         json.dump(export_weather_list, f)
