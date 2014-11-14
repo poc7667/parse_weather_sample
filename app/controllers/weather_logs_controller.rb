@@ -1,32 +1,29 @@
 class WeatherLogsController < ApplicationController
   before_action :set_weather_log, only: [:show, :edit, :update, :destroy]
-
+  include GeoProcess
   # GET /weather_logs
   # GET /weather_logs.json
   def index
     begin
-      start_time = Date.parse(params["start_time"])  if params.has_key?"start_time"
-      end_time = Date.parse(params["end_time"]) + 1.day if params.has_key?"end_time"
-      if params.has_key? "attributes"
-        attributes =  params["attributes"].split ','
-        attributes << "datetime"
-      end
-
-
-
+      start_time, end_time = get_start_time_and_end_time(params)
+      longitude, latitude = get_longitude_and_latitude(params)
+      fields = get_fields(params)
+      q = WeatherLog.nearby(100, longitude, latitude)
       if start_time and end_time
-        @weather_logs = WeatherLog.where(datetime: start_time..end_time)
+        q = q.where(datetime: start_time..end_time)
       elsif start_time
-        @weather_logs =  WeatherLog.where("datetime > ?", start_time)
+        q =  q.where("datetime >= ?", start_time)
       elsif end_time
-        @weather_logs =  WeatherLog.where("datetime < ?", end_time)
+        q =  q.where("datetime <= ?", end_time)
       end
-        @weather_logs = @weather_logs.order(datetime: :asc).first(200)
+
+      @weather_logs = q.order(datetime: :asc).limit(2000)
+
       respond_to do |format|
-        if attributes
-          format.json { render json: @weather_logs.as_json(only: attributes)}
+        if fields
+          format.json { render json: @weather_logs.as_json(only: fields)}
         else
-          format.json { render json: @weather_logs.as_json(only: [:latitude, :longitude, :datetime, :air_temperature])}
+          format.json { render json: @weather_logs.as_json(only: get_all_valid_fields)}
         end
       end
     rescue Exception => e

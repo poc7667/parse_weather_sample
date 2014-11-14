@@ -71,3 +71,5 @@ end
 gem 'pg', '~> 0.17.1'
 gem "awesome_print", require: "ap"
 gem 'activerecord-postgis-adapter'
+gem "geocoder"
+
