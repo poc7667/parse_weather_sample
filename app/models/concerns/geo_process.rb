@@ -3,6 +3,7 @@ require 'active_support/concern'
 module GeoProcess
   include ActiveSupport::Concern
   def get_longitude_and_latitude(params)
+    return false, false unless params.has_key? "location"
     locations = params["location"].split(',')
     if locations.length == 2 and locations.first.to_f.is_a? Float and  locations.last.to_f.is_a? Float
       return locations.first, locations.last

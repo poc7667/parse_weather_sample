@@ -8,7 +8,11 @@ class WeatherLogsController < ApplicationController
       start_time, end_time = get_start_time_and_end_time(params)
       longitude, latitude = get_longitude_and_latitude(params)
       fields = get_fields(params)
-      q = WeatherLog.nearby(100, longitude, latitude)
+      if longitude and latitude
+        q = WeatherLog.nearby(100, longitude, latitude)
+      else
+        q = WeatherLog.all
+      end
       if start_time and end_time
         q = q.where(datetime: start_time..end_time)
       elsif start_time
